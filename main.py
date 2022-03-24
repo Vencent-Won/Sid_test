@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/modelin/env python
 # -*- coding: utf-8 -*-
 
 '''
@@ -34,9 +34,14 @@ def main(args):
     Y_test = [dataY[i] for i in test_split]
 
     # train
-    clf = Classifier_Model_dict[args.model]()
+    if args.model == "SVM":
+        clf = Classifier_Model_dict[args.model](probability=True)
+    else:
+        clf = Classifier_Model_dict[args.model]()
     clf.fit(X_train, Y_train)
     y_pred = clf.predict(X_test)
+    # 仅使用SVM模型时有效
+    y_pro = clf.predict_proba(X_test)
     acc = metrics.accuracy_score(y_pred, Y_test)
     print("Accuracy({}):{}".format(args.model, acc))
 
